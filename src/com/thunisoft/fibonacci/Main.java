@@ -23,6 +23,8 @@ public class Main {
                System.out.println("当前位数结果为:"+result.get());
            }catch(InterruptedException  | ExecutionException e){
                e.printStackTrace();
+           }finally{
+               pool.shutdown();
            }
        }
 
