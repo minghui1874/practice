@@ -1,7 +1,9 @@
 package com.thunisoft.fibonacci;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 
 /**
  * @author minghui
@@ -9,10 +11,20 @@ import java.util.concurrent.ForkJoinPool;
  */
 public class Main {
     public static void main(String[] args){
-        ForkJoinPool pool = new ForkJoinPool();
-        Scanner scan = new Scanner(System.in);
-        int end = Integer.valueOf(scan.next());
-        FibonacciTask fibo = new FibonacciTask(0, end);
+       while(true){
+           System.out.println("请输入想要计算的数列位数:");
+           ForkJoinPool pool = new ForkJoinPool();
+           Scanner scan = new Scanner(System.in);
+           int index = Integer.valueOf(scan.next());
+           FibonacciTask fibo = new FibonacciTask(index);
+           //使用Future来执行任务并获取结果
+           Future<Integer> result = pool.submit(fibo);
+           try{
+               System.out.println("当前位数结果为:"+result.get());
+           }catch(InterruptedException  | ExecutionException e){
+               e.printStackTrace();
+           }
+       }
 
         
     }

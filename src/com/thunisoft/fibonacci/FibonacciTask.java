@@ -7,30 +7,26 @@ import java.util.concurrent.RecursiveTask;
  * @create 2017-03-03 17:44
  */
 public class FibonacciTask extends RecursiveTask<Integer>{
-    private static final int THRESHOLD = 3;//阀值
-    private int start;
-    private int end;
+    private static final int THRESHOLD = 2;//阀值
+    private int index;
 
-    public FibonacciTask(int start, int end) {
-        this.start = start;
-        this.end = end;
+    public FibonacciTask(int index) {
+        this.index = index;
     }
 
     @Override
     protected Integer compute() {
         int fibo = 0;
-        if(end == 1 || end ==2){
+        if(index == 1 || index ==2){
             fibo = 1;
             return fibo;
         }
         //如果任务太小就直接展示出来
-        if(end-start < THRESHOLD){
-            fibo = (end -1)+(end -2);
+        if((index) <= THRESHOLD){
+            fibo = index;
         }else{
-            //如果任务大于阀值，就分裂为两个子任务来计算
-            int mid = (end - start)/2;
-            FibonacciTask t1 = new FibonacciTask(start, mid);
-            FibonacciTask t2 = new FibonacciTask(mid, end);
+            FibonacciTask t1 = new FibonacciTask(index-1);
+            FibonacciTask t2 = new FibonacciTask(index-2);
             //执行子任务
             t1.fork();
             t2.fork();
