@@ -3,7 +3,7 @@ package com.thunisoft.fibonacci;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
+import java.util.concurrent.ForkJoinTask;
 
 /**
  * @author minghui
@@ -17,8 +17,8 @@ public class Main {
            Scanner scan = new Scanner(System.in);
            int index = Integer.valueOf(scan.next());
            FibonacciTask fibo = new FibonacciTask(index);
-           //使用Future来执行任务并获取结果
-           Future<Integer> result = pool.submit(fibo);
+           //使用ForkJoinTask来执行任务并获取结果
+           ForkJoinTask<Integer> result = pool.submit(fibo);
            try{
                System.out.println("当前位数结果为:"+result.get());
            }catch(InterruptedException  | ExecutionException e){
