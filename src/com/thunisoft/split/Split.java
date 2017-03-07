@@ -11,10 +11,16 @@ public class Split {
     public static void main(String[] args) {
         String s = "wqw.eq.wesadsad";
         List<String> result = split(s, ".");
-        System.out.println(result);
+        System.out.println(result.get(1));
 
     }
 
+    /**
+     *
+     * @param str 需要拆分的字符串
+     * @param separator 拆分的字符
+     * @return
+     */
     public static List<String> split(String str,String separator){
         int size = str.length();
         int pos = 0;
