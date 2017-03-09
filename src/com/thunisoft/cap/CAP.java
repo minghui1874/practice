@@ -21,22 +21,20 @@ public class CAP {
     //生产者
     private static class Producer implements Runnable {
 
-        private  void produce(){
-            synchronized (storageList){
-                try{
-                    while(storageList.size() >= MAX_SIZE){
+        private void produce() {
+            synchronized (storageList) {
+                try {
+                    while (storageList.size() >= MAX_SIZE) {
                         System.out.println("仓库已满，停止生产");
                         storageList.wait();//仓库满了就放弃锁，让其他线程来执行
                     }
-                    if(storageList.size() < MAX_SIZE) {
-                        String name = "产品" + new Random().nextInt();
-                        storageList.add(name);
-                        System.out.println(Thread.currentThread().getName() + "生产了一个产品");
-                    }
+                    String name = "产品" + new Random().nextInt();
+                    storageList.add(name);
+                    System.out.println(Thread.currentThread().getName() + "生产了一个产品");
                     Thread.sleep(100);
                     storageList.notifyAll();//唤醒其他线程
 
-                }catch(InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
@@ -45,27 +43,25 @@ public class CAP {
 
         @Override
         public void run() {
-            while (true){
+            while (true) {
                 produce();
             }
         }
     }
 
     //消费者
-    private static class Customer implements Runnable{
-        private void consume(){
-            synchronized (storageList){
-                try{
-                    while (storageList.size() <= ZERO){
+    private static class Customer implements Runnable {
+        private void consume() {
+            synchronized (storageList) {
+                try {
+                    while (storageList.size() <= ZERO) {
                         System.out.println("仓库为空，等待生产者生产");
                         storageList.wait();
                     }
-                    if(storageList.size() > ZERO){
-                        System.out.println(Thread.currentThread().getName() + "取得产品："+ storageList.remove(0));
-                    }
-                    Thread.sleep(1000);
+                    System.out.println(Thread.currentThread().getName() + "取得产品：" + storageList.remove(0));
+                    Thread.sleep(100);
                     storageList.notifyAll();
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -74,7 +70,7 @@ public class CAP {
 
         @Override
         public void run() {
-            while (true){
+            while (true) {
                 consume();
             }
         }
